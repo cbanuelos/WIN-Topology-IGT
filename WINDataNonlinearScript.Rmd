@@ -1,0 +1,234 @@
+---
+title: "WIN Data Non-linear Correlation Script"
+author: "Cristina Banuelos"
+date: "June 1, 2018"
+output:
+  html_document:
+    df_print: paged
+---
+
+All plots backwards - flip x & y
+
+
+Baseline Variable data
+Non-linear Correlation Analysis
+
+Binary - Part 1
+
+Weighted/Continuous Variables - Part 2
+
+```{r setup, include=FALSE, echo=FALSE, error=FALSE}
+library(ggplot2)
+mergedWINData = read.csv(file="~/Desktop/mergedWINData.csv")
+mergedWINData$X = NULL
+```
+
+
+--------------------------------------------------------------
+
+Part 1 ~ P Scores
+
+--------------------------------------------------------------
+
+
+Density & P
+```{r}
+ggplot(data=mergedWINData, aes(y=baseline_p, x=density_baseline))+geom_smooth()+geom_point()
+
+```
+
+Clustering Coefficient & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$clustering_coeff_average.binary._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Transitivity & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$transitivity.binary._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Network Characteristic Path Length & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$network_characteristic_path_length.binary._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Small worldness & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$small.worldness.binary._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Global Efficiency & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$global_efficiency.binary._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+No Diameter & P
+
+No Redius  & P
+
+
+Local Efficiency & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$local_efficiency.binary._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Assortativity Coefficient & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$assortativity_coefficient.binary._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+
+--------------------------------------------------------------
+
+Part 1 ~ Q Scores
+
+--------------------------------------------------------------
+
+
+Density & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$density_baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Clustering Coefficient & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$clustering_coeff_average.binary._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Transitivity & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$transitivity.binary._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Network Characteristic Path Length & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$network_characteristic_path_length.binary._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Small Worldness & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$small.worldness.binary._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Global Efficiency & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$global_efficiency.binary._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+
+No diameter & Q
+No radius & Q
+
+
+
+Local Efficiency & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$local_efficiency.binary._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Assortativity & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$assortativity_coefficient.binary._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+
+
+--------------------------------------------------------------
+
+Part 2 ~ P Scores
+
+--------------------------------------------------------------
+
+Transitivity & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$transitivity.weighted._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+
+Network Characteristic Path Length & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$network_characteristic_path_length.weighted._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Small Worldness & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$small.worldness.weighted._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Global Efficiency & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$global_efficiency.weighted._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Diameter & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$diameter_of_graph.weighted._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Radius & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$radius_of_graph.weighted._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Local Efficiency & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$local_efficiency.weighted._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+Assortativity & P
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$assortativity_coefficient.weighted._baseline, x=baseline_p))+geom_smooth()+geom_point()
+```
+
+
+--------------------------------------------------------------
+
+Part 2 ~ Q Scores
+
+--------------------------------------------------------------
+
+Transitivity & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$transitivity.weighted._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Network Characteristic Path Length & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$network_characteristic_path_length.weighted._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Small Worldness & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$small.worldness.weighted._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$global_efficiency.weighted._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Diameter & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$diameter_of_graph.weighted._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Radius & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$radius_of_graph.weighted._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Local Efficiency & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$local_efficiency.weighted._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Assortativity & Q
+```{r}
+ggplot(data=mergedWINData, aes(y=mergedWINData$assortativity_coefficient.weighted._baseline, x=baseline_q))+geom_smooth()+geom_point()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

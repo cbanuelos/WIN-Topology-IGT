@@ -1,0 +1,104 @@
+---
+title: "PCA Analysis on WIN Data"
+output: html_notebook
+author: Cristina Banuelos
+date: June 20, 2018
+---
+
+
+```{r}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+mergedWINData = read.csv(file="~/Desktop/mergedWINData.csv")
+mergedWINData$X = NULL
+
+```
+
+Standardization of variables
+```{r}
+
+baseline_p_scaled <- scale(mergedWINData$baseline_p)
+baseline_q_scaled <- scale(mergedWINData$baseline_q)
+
+density_baseline_scaled <- scale(mergedWINData$density_baseline)
+clustering_coeff_average.binary._baseline_scaled <- scale(mergedWINData$clustering_coeff_average.binary._baseline)
+transitivity.binary._baseline_scaled <- scale(mergedWINData$transitivity.binary._baseline)
+network_characteristic_path_length.binary._baseline_scaled <- scale(mergedWINData$network_characteristic_path_length.binary._baseline)
+small.worldness.binary._baseline_scaled <- scale(mergedWINData$small.worldness.binary._baseline)
+global_efficiency.binary._baseline_scaled <- scale(mergedWINData$global_efficiency.binary._baseline)
+local_efficiency.binary._baseline_scaled <- scale(mergedWINData$local_efficiency.binary._baseline)
+assortativity_coefficient.binary._baseline_scaled <- scale(mergedWINData$assortativity_coefficient.binary._baseline)
+
+transitivity.weighted._baseline_scaled <- scale(mergedWINData$transitivity.weighted._baseline)
+network_characteristic_path_length.weighted._baseline_scaled <- scale(mergedWINData$network_characteristic_path_length.weighted._baseline)
+small.worldness.weighted._baseline_scaled <- scale(mergedWINData$small.worldness.weighted._baseline)
+global_efficiency.weighted._baseline_scaled <- scale(mergedWINData$global_efficiency.weighted._baseline)
+local_efficiency.weighted._baseline_scaled <- scale(mergedWINData$local_efficiency.weighted._baseline)
+assortativity_coefficient.weighted._baseline_scaled <- scale(mergedWINData$assortativity_coefficient.weighted._baseline)
+
+standardizedVariables <- data.frame(density=density_baseline_scaled,
+                                    clust_binary=clustering_coeff_average.binary._baseline_scaled,
+                                    trans_binary=transitivity.binary._baseline_scaled,
+                                    net_binary=network_characteristic_path_length.binary._baseline_scaled,
+                                    small_binary=small.worldness.binary._baseline_scaled,
+                                    global_binary=global_efficiency.binary._baseline_scaled,
+                                    local_binary=local_efficiency.binary._baseline_scaled,
+                                    assort_binary=assortativity_coefficient.binary._baseline_scaled,
+                                    
+                                    trans_weighted=transitivity.weighted._baseline_scaled,
+                                    net_weighted=network_characteristic_path_length.weighted._baseline_scaled,
+                                    small_weighted=small.worldness.weighted._baseline_scaled,
+                                    global_weighted=global_efficiency.weighted._baseline_scaled,
+                                    local_weighted=local_efficiency.weighted._baseline_scaled,
+                                    assort_weighted=assortativity_coefficient.weighted._baseline_scaled,
+                                    
+                                    Pscore=baseline_p_scaled,
+                                    Qscore=baseline_q_scaled)
+```
+
+
+Binary Variables
+```{r}
+myData <- standardizedVariables[,c(1,2,3,4,5,6,7,8)]
+
+myPCA = princomp(na.omit(myData),
+               cor = TRUE,
+               scores = TRUE)
+
+summary(myPCA)
+
+myPCA$loadings
+
+plot(myPCA)
+
+
+library("factoextra")
+fviz_screeplot(myPCA, ncp=10)
+fviz_pca_biplot(myPCA) + theme_minimal()
+```
+
+Weighted Variables
+```{r}
+myData <- standardizedVariables[, c(9,10,11,12,13,14)]
+
+myPCA = princomp(na.omit(myData),
+               cor = TRUE,
+               scores = TRUE)
+
+summary(myPCA)
+plot(myPCA)
+myPCA$loadings
+
+library("factoextra")
+fviz_screeplot(myPCA, ncp=10)
+fviz_pca_biplot(myPCA) + theme_minimal()
+
+```
+
+
+
+
+
+
+

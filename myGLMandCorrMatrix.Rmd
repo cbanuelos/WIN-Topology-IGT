@@ -1,0 +1,283 @@
+---
+title: "GLM & Correlation Matrix Script"
+output: html_notebook
+author: Cristina Banuelos
+date: June 8, 2018
+---
+
+GLM for p and continuous binary variables
+
+```{r}
+fit = glm(baseline_p~
+           density_baseline+
+           clustering_coeff_average.binary._baseline+
+           transitivity.binary._baseline+
+           network_characteristic_path_length.binary._baseline+
+           small.worldness.binary._baseline+
+           global_efficiency.binary._baseline+
+           #diameter_of_graph.binary._baseline+
+           #radius_of_graph.binary._baseline+
+           local_efficiency.binary._baseline+
+           assortativity_coefficient.binary._baseline,
+        family = gaussian(identity),
+        data = mergedWINData)
+summary(fit) # displays results of glm
+
+#plot(fit)
+
+#confint(fit) # 95% confidence intervals for coefficients
+
+#exp(coef(fit)) # exponentiated coefficients
+
+#exp(confint(fit)) # 95% confidence intervals for exponentiated coefficients
+
+#predict(fit, type="response") # predicted values
+
+#residuals(fit, type="deviance") # residuals
+
+```
+
+GLM for q and continuous binary variables
+
+```{r}
+fit2 = glm(baseline_q~
+           density_baseline+
+           clustering_coeff_average.binary._baseline+
+           transitivity.binary._baseline+
+           network_characteristic_path_length.binary._baseline+
+           small.worldness.binary._baseline+
+           global_efficiency.binary._baseline+
+           #diameter_of_graph.binary._baseline+
+           #radius_of_graph.binary._baseline+
+           local_efficiency.binary._baseline+
+           assortativity_coefficient.binary._baseline,
+        family = gaussian(identity),
+        data = mergedWINData)
+summary(fit2)
+```
+
+```{r}
+fit = glm(baseline_p~
+           density_baseline+
+           transitivity.weighted._baseline+
+           network_characteristic_path_length.weighted._baseline+
+           small.worldness.weighted._baseline+
+           global_efficiency.weighted._baseline+
+           diameter_of_graph.weighted._baseline+
+           radius_of_graph.weighted._baseline+
+           local_efficiency.weighted._baseline+
+           assortativity_coefficient.weighted._baseline,
+        family = gaussian(identity),
+        data = mergedWINData)
+summary(fit) # displays results of glm
+```
+
+```{r}
+fit = glm(baseline_q~
+           density_baseline+
+           transitivity.weighted._baseline+
+           network_characteristic_path_length.weighted._baseline+
+           small.worldness.weighted._baseline+
+           global_efficiency.weighted._baseline+
+           diameter_of_graph.weighted._baseline+
+           radius_of_graph.weighted._baseline+
+           local_efficiency.weighted._baseline+
+           assortativity_coefficient.weighted._baseline,
+        family = gaussian(identity),
+        data = mergedWINData)
+summary(fit)
+```
+
+Correlation Matrix for Continuous Binary Variables
+```{r}
+myData <- mergedWINData[1:126, c(2,3,4,6,8,10,16,18)]
+head(myData)
+
+corrMatrix <- round(cor(myData, use="complete.obs"), 2)
+head(corrMatrix)
+
+library(reshape2)
+
+meltedCorrMatrix <- melt(corrMatrix)
+head(meltedCorrMatrix)
+
+library(ggplot2)
+
+ggplot(data = meltedCorrMatrix, aes(x=Var1, y=Var2, fill=value)) + 
+  
+  geom_tile(color="white") +
+  
+  scale_x_discrete(labels = c("Density", "Clustering Coeff", "Transitivity", "Char Path Length", 
+                            "Small Worldness", "Global Efficiency", "Local Efficiency", 
+                            "Assortativity")) +
+  
+  scale_y_discrete(labels = c("Density", "Clustering Coeff", "Transitivity", "Char Path Length", 
+                            "Small Worldness", "Global Efficiency", "Local Efficiency", 
+                            "Assortativity")) +
+  
+  scale_fill_gradient(low = "yellow", high = "red", 
+                      limit = c(-1,1), space = "Lab",
+                      name = "WIN Binary Variables\nCorrelation Matrix\n\n") + 
+                      theme_minimal() + 
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.border = element_blank(),
+    panel.background = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text.x = element_text(angle = 45, vjust = 1, size = 9, hjust = 1)) +
+                        
+  geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+  
+  coord_fixed()
+```
+
+Lower Half Correlation Matrix for Continuous Binary Variables
+```{r}
+myData <- mergedWINData[1:126, c(2,3,4,6,8,10,16,18)]
+head(myData)
+
+corrMatrix <- round(cor(myData, use="complete.obs"), 2)
+head(corrMatrix)
+
+library(reshape2)
+
+getLowerTri <- function(corrMatrix){
+  corrMatrix[upper.tri(corrMatrix)] <- NA
+  return(corrMatrix)
+}
+lowerTri <- getLowerTri(corrMatrix)
+meltedCorrMatrix <- melt(lowerTri, na.rm = TRUE )
+head(meltedCorrMatrix)
+
+library(ggplot2)
+
+ggplot(data = meltedCorrMatrix, p.mat = p.mat, aes(x=Var1, y=Var2, fill=value)) + 
+  
+  geom_tile(color="white") +
+  
+  scale_x_discrete(labels = c("Density", "Clustering Coeff", "Transitivity", "Char Path Length", 
+                            "Small Worldness", "Global Efficiency", "Local Efficiency", 
+                            "Assortativity")) +
+  
+  scale_y_discrete(labels = c("Density", "Clustering Coeff", "Transitivity", "Char Path Length", 
+                            "Small Worldness", "Global Efficiency", "Local Efficiency", 
+                            "Assortativity")) +
+  
+  scale_fill_gradient(low = "gold", high = "red", 
+                      limit = c(-1,1), space = "Lab",
+                      name = "WIN Binary Variables\nCorrelation Matrix\n\n") + 
+  theme_minimal() + 
+  
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.border = element_blank(),
+    panel.background = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text.x = element_text(angle = 45, vjust = 1, size = 9, hjust = 1)) +
+  
+  coord_fixed() +
+  
+  geom_text(aes(Var1, Var2, label = value), color = "black", size = 4)
+```
+
+Correlation Matrix for Continuous Weighted Variables
+```{r}
+myData <- mergedWINData[1:126, c(2,5,7,9,11,17,19)]
+head(myData)
+
+corrMatrix <- round(cor(myData, use="complete.obs"), 2)
+head(corrMatrix)
+
+library(reshape2)
+
+meltedCorrMatrix <- melt(corrMatrix)
+head(meltedCorrMatrix)
+
+library(ggplot2)
+
+ggplot(data = meltedCorrMatrix, aes(x=Var1, y=Var2, fill=value)) + 
+  
+  geom_tile(color="white") +
+  
+  scale_x_discrete(labels = c("Density", "Transitivity", "Char Path Length", 
+                            "Small Worldness", "Global Efficiency", "Local Efficiency", 
+                            "Assortativity")) +
+  
+  scale_y_discrete(labels = c("Density", "Transitivity", "Char Path Length", 
+                            "Small Worldness", "Global Efficiency", "Local Efficiency", 
+                            "Assortativity")) +
+  
+  scale_fill_gradient(low = "yellow", high = "red", 
+                      limit = c(-1,1), space = "Lab",
+                      name = "WIN Weighted Variables\nCorrelation Matrix\n\n") + 
+  
+  theme_minimal() + 
+  
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.border = element_blank(),
+    panel.background = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text.x = element_text(angle = 45, vjust = 1, size = 9, hjust = 1)) +
+  
+  coord_fixed() +
+  
+  geom_text(aes(Var2, Var1, label = value), color = "white", size = 4)
+```
+Lower Half Correlation Matrix for Continuous Weighted Variables
+```{r}
+myData <- mergedWINData[1:126, c(2,5,7,9,11,17,19)]
+head(myData)
+
+corrMatrix <- round(cor(myData, use="complete.obs"), 2)
+head(corrMatrix)
+
+library(reshape2)
+
+getLowerTri <- function(corrMatrix){
+  corrMatrix[upper.tri(corrMatrix)] <- NA
+  return(corrMatrix)
+}
+lowerTri <- getLowerTri(corrMatrix)
+meltedCorrMatrix <- melt(lowerTri, na.rm = TRUE )
+head(meltedCorrMatrix)
+
+library(ggplot2)
+
+ggplot(data = meltedCorrMatrix, p.mat = p.mat, aes(x=Var1, y=Var2, fill=value)) + 
+  
+  geom_tile(color="white") +
+
+  scale_x_discrete(labels = c("Density", "Transitivity", "Char Path Length",
+                              "Small Worldness", "Global Efficiency", "Local Efficiency",
+                              "Assortativity")) +
+
+  scale_y_discrete(labels = c("Density", "Transitivity", "Char Path Length",
+                              "Small Worldness", "Global Efficiency", "Local Efficiency",
+                              "Assortativity")) +
+  
+  scale_fill_gradient(low = "yellow", high = "red", 
+                      limit = c(-1,1), space = "Lab",
+                      name = "WIN Weighted Variables\nCorrelation Matrix") + 
+  theme_minimal() + 
+  
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.border = element_blank(),
+    panel.background = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text.x = element_text(angle = 45, vjust = 1, size = 9, hjust = 1)) +
+  
+  coord_fixed() +
+  
+  geom_text(aes(Var1, Var2, label = value), color = "white", size = 4, check_overlap = FALSE)
+```
+

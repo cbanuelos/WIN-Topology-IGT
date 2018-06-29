@@ -1,0 +1,149 @@
+---
+title: "WIN Data Distribution Script"
+output: html_document
+author: Cristina Banuelos
+date: May 15, 2018
+---
+
+Baseline Variable data
+Distribution Analysis
+
+Binary - summary table & boxplot (hidden)
+Weighted/Continuous Variables - histogram 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+mergedWINData = read.csv(file="~/Desktop/mergedWINData.csv")
+mergedWINData$X = NULL
+
+```
+
+Density 
+- the fraction of present connections to all possible connections without taking into account any connection weights in the calculation (Rubinov & Sporns 2010)
+
+```{r}
+summary(mergedWINData$density_baseline)
+#boxplot(mergedWINData$density_baseline)      
+```
+
+```{r}
+
+hist(mergedWINData$density_baseline)
+```
+
+Clustering Coefficient Average
+- alternative to transitivity
+
+```{r}
+summary(mergedWINData$clustering_coeff_average.binary._baseline)
+#boxplot(mergedWINData$clustering_coeff_average.binary._baseline)      
+```
+
+```{r}
+hist(mergedWINData$clustering_coeff_average.binary._baseline)
+```
+
+
+Transitivity
+- the ratio of triangles to triplets in the network, and can be used as an alternative to the clustering coefficient (Rubinov & Sporns 2010)
+
+```{r}
+summary(mergedWINData$transitivity.binary._baseline)
+#boxplot(mergedWINData$transitivity.binary._baseline)      
+```
+
+```{r}
+summary(mergedWINData$transitivity.weighted._baseline)
+hist(mergedWINData$transitivity.weighted._baseline)
+```
+
+(Network) Characteristic Path Length
+- the average shortest path length in the network (Rubinov & Sporns) 
+```{r}
+summary(mergedWINData$network_characteristic_path_length.binary._baseline)
+#boxplot(mergedWINData$network_characteristic_path_length.binary._baseline)      
+```
+
+```{r}
+summary(mergedWINData$network_characteristic_path_length.weighted._baseline)
+hist(mergedWINData$network_characteristic_path_length.weighted._baseline)
+```
+
+Small Worldness 
+- dense local clustering or cliquishness of connections between neighboring nodes yet a short path length between any (distant) pair of nodes due to the existence of relatively few long range connections (Bassett & Bullmore 2006)
+
+```{r}
+summary(mergedWINData$small.worldness.binary._baseline)
+#boxplot(mergedWINData$small.worldness.binary._baseline)      
+```
+
+```{r}
+hist(mergedWINData$small.worldness.weighted._baseline)
+```
+
+Global Efficiency
+- the average inverse shortest path length in the network (Rubinov & Sporns 2010)
+
+```{r}
+summary(mergedWINData$global_efficiency.binary._baseline)
+#boxplot(mergedWINData$global_efficiency.binary._baseline)      
+```
+
+```{r}
+hist(mergedWINData$global_efficiency.weighted._baseline)
+```
+
+Diameter of Graph 
+- the maximum eccentricity (Rubinov & Sporns 2010)
+```{r}
+summary(mergedWINData$diameter_of_graph.binary._baseline)
+#boxplot(mergedWINData$diameter_of_graph.binary._baseline)      
+```
+
+```{r}
+hist(mergedWINData$diameter_of_graph.weighted._baseline)
+```
+
+Radius of Graph
+- the minimum eccentricity (Rubinov & Sporns 2010)
+
+```{r}
+summary(mergedWINData$radius_of_graph.binary._baseline)
+#boxplot(mergedWINData$radius_of_graph.binary._baseline)      
+```
+
+```{r}
+hist(mergedWINData$radius_of_graph.weighted._baseline)
+```
+
+Local Efficiency 
+-  the global efficiency computed on node neighborhoods, and is related to the clustering coefficient (Rubinov & Sporns 2010)
+
+```{r}
+summary(mergedWINData$local_efficiency.binary._baseline)
+#boxplot(mergedWINData$local_efficiency.binary._baseline)      
+```
+
+```{r}
+hist(mergedWINData$local_efficiency.weighted._baseline)
+```
+
+Assortativity
+- a correlation coefficient between the degrees of all nodes on two opposite ends of a link (Rubinov & Sporns). A positive value would indicate that nodes tend to link to other nodes with the same or a similar degree (Rubinov & Sporns 2010).
+
+```{r}
+summary(mergedWINData$assortativity_coefficient.binary._baseline)
+#boxplot(mergedWINData$assortativity_coefficient.binary._baseline)      
+```
+
+```{r}
+hist(mergedWINData$assortativity_coefficient.weighted._baseline)
+```
+
+
+
+
+
+
+

@@ -1,0 +1,187 @@
+---
+title: "Standardized PCR Analysis Script"
+output: html_notebook
+author: Cristina Banuelos
+date: June 14, 1018
+---
+
+
+All PCR's were done by standardizing the coefficients (z-score) & using a 10-fold cross-validation
+
+Standardization of variables
+```{r}
+
+baseline_p_scaled <- scale(mergedWINData$baseline_p)
+baseline_q_scaled <- scale(mergedWINData$baseline_q)
+
+density_baseline_scaled <- scale(mergedWINData$density_baseline)
+clustering_coeff_average.binary._baseline_scaled <- scale(mergedWINData$clustering_coeff_average.binary._baseline)
+transitivity.binary._baseline_scaled <- scale(mergedWINData$transitivity.binary._baseline)
+network_characteristic_path_length.binary._baseline_scaled <- scale(mergedWINData$network_characteristic_path_length.binary._baseline)
+small.worldness.binary._baseline_scaled <- scale(mergedWINData$small.worldness.binary._baseline)
+global_efficiency.binary._baseline_scaled <- scale(mergedWINData$global_efficiency.binary._baseline)
+local_efficiency.binary._baseline_scaled <- scale(mergedWINData$local_efficiency.binary._baseline)
+assortativity_coefficient.binary._baseline_scaled <- scale(mergedWINData$assortativity_coefficient.binary._baseline)
+
+transitivity.weighted._baseline_scaled <- scale(mergedWINData$transitivity.weighted._baseline)
+network_characteristic_path_length.weighted._baseline_scaled <- scale(mergedWINData$network_characteristic_path_length.weighted._baseline)
+small.worldness.weighted._baseline_scaled <- scale(mergedWINData$small.worldness.weighted._baseline)
+global_efficiency.weighted._baseline_scaled <- scale(mergedWINData$global_efficiency.weighted._baseline)
+local_efficiency.weighted._baseline_scaled <- scale(mergedWINData$local_efficiency.weighted._baseline)
+assortativity_coefficient.weighted._baseline_scaled <- scale(mergedWINData$assortativity_coefficient.weighted._baseline)
+
+standardizedVariables <- data.frame(density=density_baseline_scaled,
+                                    clust_binary=clustering_coeff_average.binary._baseline_scaled,
+                                    trans_binary=transitivity.binary._baseline_scaled,
+                                    net_binary=network_characteristic_path_length.binary._baseline_scaled,
+                                    small_binary=small.worldness.binary._baseline_scaled,
+                                    global_binary=global_efficiency.binary._baseline_scaled,
+                                    local_binary=local_efficiency.binary._baseline_scaled,
+                                    assort_binary=assortativity_coefficient.binary._baseline_scaled,
+                                    
+                                    trans_weighted=transitivity.weighted._baseline_scaled,
+                                    net_weighted=network_characteristic_path_length.weighted._baseline_scaled,
+                                    small_weighted=small.worldness.weighted._baseline_scaled,
+                                    global_weighted=global_efficiency.weighted._baseline_scaled,
+                                    local_weighted=local_efficiency.weighted._baseline_scaled,
+                                    assort_weighted=assortativity_coefficient.weighted._baseline_scaled,
+                                    
+                                    Pscore=baseline_p_scaled,
+                                    Qscore=baseline_q_scaled)
+```
+
+#Binary (continuous) and P
+
+1. Running PCR summary
+2. Plotted the validation curve
+
+```{r}
+library(pls)
+
+pcr.fit = pcr(baseline_p_scaled~
+           density_baseline_scaled+
+           clustering_coeff_average.binary._baseline_scaled+
+           transitivity.binary._baseline_scaled+
+           network_characteristic_path_length.binary._baseline_scaled+
+           small.worldness.binary._baseline_scaled+
+           global_efficiency.binary._baseline_scaled+
+           local_efficiency.binary._baseline_scaled+
+           assortativity_coefficient.binary._baseline_scaled,
+          data = mergedWINData,
+          scale = TRUE,
+          validation = "CV"
+           )
+
+summary(pcr.fit)
+
+validationplot(pcr.fit, val.type = "MSEP")
+validationplot(pcr.fit, val.type = "R2")
+predplot(pcr.fit)
+coefplot(pcr.fit) # plot of regression coefficients
+```
+
+MODEL 
+
+
+
+```{r}
+set.seed(1)
+x = standardizedVariables[,c(1,2,3,4,5,6,7,8)]
+y = standardizedVariables$Pscore
+
+train = sample(1:nrow(x), nrow(x))
+test = (-train)
+y.test = y[test]
+
+  
+pcr.pred = predict(na.exclude(pcr.fit), na.exclude(x[test,]), ncomp = 5)
+mean(na.exclude(pcr.pred) - (na.exclude(y.test)^2))
+```
+
+
+
+#Binary (continuous) and Q
+
+1. Running PCR summary
+2. Plotted the validation curve
+```{r}
+library(pls)
+
+pcr.fit = pcr(baseline_q_scaled~
+           density_baseline_scaled+
+           clustering_coeff_average.binary._baseline_scaled+
+           transitivity.binary._baseline_scaled+
+           network_characteristic_path_length.binary._baseline_scaled+
+           small.worldness.binary._baseline_scaled+
+           global_efficiency.binary._baseline_scaled+
+           local_efficiency.binary._baseline_scaled+
+           assortativity_coefficient.binary._baseline_scaled,
+          data = mergedWINData,
+          scale = TRUE,
+          validation = "CV"
+           )
+
+summary(pcr.fit)
+
+validationplot(pcr.fit, val.type = "MSEP")
+validationplot(pcr.fit, val.type = "R2")
+predplot(pcr.fit)
+coefplot(pcr.fit)
+```
+
+#Weighted (continuous) and P
+
+1. Running PCR summary
+2. Plotted the validation curve
+
+```{r}
+library(pls)
+
+pcr.fit = pcr(baseline_p_scaled~
+           transitivity.weighted._baseline_scaled+
+           network_characteristic_path_length.weighted._baseline_scaled+
+           small.worldness.weighted._baseline_scaled+
+           global_efficiency.weighted._baseline_scaled+
+           local_efficiency.weighted._baseline_scaled+
+           assortativity_coefficient.weighted._baseline_scaled,
+          data = mergedWINData,
+          scale = TRUE,
+          validation = "CV"
+           )
+
+summary(pcr.fit)
+
+validationplot(pcr.fit, val.type = "MSEP")
+validationplot(pcr.fit, val.type = "R2")
+predplot(pcr.fit)
+coefplot(pcr.fit)
+```
+
+
+#Weighted (continuous) and Q
+
+1. Running PCR summary
+2. Plotted the validation curve
+
+```{r}
+library(pls)
+
+pcr.fit = pcr(baseline_q_scaled~
+           transitivity.weighted._baseline_scaled+
+           network_characteristic_path_length.weighted._baselin e_scaled+
+           small.worldness.weighted._baseline_scaled+
+           global_efficiency.weighted._baseline_scaled+
+           local_efficiency.weighted._baseline_scaled+
+           assortativity_coefficient.weighted._baseline_scaled,
+          data = mergedWINData,
+          scale = TRUE,
+          validation = "CV"
+           )
+
+summary(pcr.fit)
+
+validationplot(pcr.fit, val.type = "MSEP")
+validationplot(pcr.fit, val.type = "R2")
+predplot(pcr.fit)
+coefplot(pcr.fit)
+```

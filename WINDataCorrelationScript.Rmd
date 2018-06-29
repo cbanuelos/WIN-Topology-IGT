@@ -1,0 +1,139 @@
+---
+title: "WIN Data Correlation Script"
+output: html_notebook
+author: Cristy Banuelos
+date: Friday, May 18, 2018
+---
+
+Baseline Variable data
+Correlation Analysis between Network Measures & P/Q Scores
+
+Part 1 - Binary Variables
+Part 2 - Weighted/Continuous Variables 
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+mergedWINData = read.csv(file="~/Desktop/mergedWINData.csv")
+mergedWINData$X = NULL
+
+```
+
+----------------------------------------------------------------
+
+Part 1 ~ Q Scores
+
+Part 1 ~ P Scores
+
+----------------------------------------------------------------
+Density & P 
+
+```{r}
+cor(mergedWINData$density_baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Clustering Coefficient & P
+
+```{r}
+cor(mergedWINData$clustering_coeff_average.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Transitivity & P
+
+```{r}
+cor(mergedWINData$transitivity.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Network Characteristic Path Length & P
+
+```{r}
+cor(mergedWINData$network_characteristic_path_length.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Small Worldness & P
+
+```{r}
+cor(mergedWINData$small.worldness.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Global Efficiency & P
+
+```{r}
+cor(mergedWINData$global_efficiency.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Diameter of Graph & P 
+Not numeric
+
+```{r}
+#cor(mergedWINData$diameter_of_graph.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Radius of Graph & P
+Not numeric
+
+```{r}
+#cor(mergedWINData$radius_of_graph.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Local Efficiency & P
+
+```{r}
+cor(mergedWINData$local_efficiency.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+Assortativity & P
+
+```{r}
+cor(mergedWINData$assortativity_coefficient.binary._baseline, mergedWINData$baseline_p, use ="pairwise.complete.obs")
+```
+
+----------------------------------------------------------------
+
+Part 1 ~ Q Scores
+
+----------------------------------------------------------------
+
+
+Density & Q
+
+```{r}
+cor(mergedWINData$density_baseline, mergedWINData$baseline_q, use ="pairwise.complete.obs")
+```
+
+
+Clustering Coefficiency & Q
+
+```{r}
+cor(mergedWINData$clustering_coeff_average.binary._baseline, mergedWINData$baseline_q, use ="pairwise.complete.obs")
+```
+
+Transitivity & Q
+
+```{r}
+cor(mergedWINData$transitivity.binary._baseline, mergedWINData$baseline_q, use ="pairwise.complete.obs")
+```
+
+Network Characteristic Path Length & Q
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
